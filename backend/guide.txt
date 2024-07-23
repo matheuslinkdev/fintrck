@@ -1,0 +1,14 @@
+## Para iniciar o servidor backend, o seguinte comando deve ser executado: 
+
+backend> npm start 
+
+que executa: ("start": "ts-node src/index.ts") conforme no package.json
+
+
+/// String de conexão do mongo :   
+
+const MONGO_URL = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.wphaumh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+
+  console.log(MONGO_URL);
+  
+////

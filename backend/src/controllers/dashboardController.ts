@@ -1,63 +1,143 @@
 import { Request, Response } from "express";
+import { TransactionModel } from "../models/transactionModel";
 
-// Interface para a estrutura da transação
-interface Transaction {
-  id: number;
-  description: string;
-  amount: number;
-  date: string;
-}
-
-// Função para gerar movimentações financeiras falsas
-const generateFakeTransactions = (): Transaction[] => {
-  return [
-    {
-      id: 1,
-      description: "Compra no supermercado",
-      amount: -50.0,
-      date: "2024-07-20",
-    },
-    { id: 2, description: "Salário", amount: 1500.0, date: "2024-07-15" },
-    {
-      id: 3,
-      description: "Assinatura Netflix",
-      amount: -30.0,
-      date: "2024-07-10",
-    },
-  ];
+// Função auxiliar para responder com transações filtradas
+const respondWithFilteredTransactions = async (
+  filter: any,
+  res: Response
+): Promise<void> => {
+  try {
+    const transactions = await TransactionModel.find(filter);
+    res.status(transactions.length ? 200 : 204).json(transactions);
+  } catch (error) {
+    res.status(500).json({ message: "Erro ao obter transações", error });
+  }
 };
 
 // Função para obter todas as transações
-export const getTransactions = (req: Request, res: Response): void => {
-  const transactions = generateFakeTransactions();
+export const getTransactions = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  await respondWithFilteredTransactions({}, res);
+};
 
-  if (transactions.length > 0) {
-    res.json(transactions);
-  } else {
-    res.status(204).send(); // No Content
+export const getTransactionByID = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+
+    // Verifica se o ID é válido
+    if (!id) {
+      res.status(400).json({ message: "ID da transação não fornecido" });
+      return;
+    }
+
+    // Buscar a transação com o ID fornecido
+    const transaction = await TransactionModel.findById(id);
+
+    if (transaction) {
+      res.status(200).json(transaction);
+    } else {
+      res.status(404).json({ message: "Transação não encontrada" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Erro ao obter a transação", error });
+  }
+};
+
+export const updateTransaction = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+
+    // Verifica se o ID é válido
+    if (!id) {
+      res.status(400).json({ message: "ID da transação não fornecido" });
+      return;
+    }
+
+    // Buscar e atualizar a transação com o ID fornecido
+    const updatedTransaction = await TransactionModel.findByIdAndUpdate(
+      id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+
+    if (updatedTransaction) {
+      res.status(200).json(updatedTransaction);
+    } else {
+      res.status(404).json({ message: "Transação não encontrada" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Erro ao atualizar a transação", error });
   }
 };
 
 // Função para obter despesas
-export const expensesList = (req: Request, res: Response): void => {
-  const transactions = generateFakeTransactions();
-  const expenses = transactions.filter((transaction) => transaction.amount < 0);
-
-  if (expenses.length > 0) {
-    res.json(expenses);
-  } else {
-    res.status(204).send(); // No Content
-  }
+export const expensesList = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  await respondWithFilteredTransactions({ transactionType: "expense" }, res);
 };
 
 // Função para obter entradas
-export const entriesList = (req: Request, res: Response): void => {
-  const transactions = generateFakeTransactions();
-  const entries = transactions.filter((transaction) => transaction.amount > 0);
+export const entriesList = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  await respondWithFilteredTransactions({ transactionType: "income" }, res);
+};
 
-  if (entries.length > 0) {
-    res.json(entries);
-  } else {
-    res.status(204).send(); // No Content
+// Função para obter transações importantes
+export const importantList = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  await respondWithFilteredTransactions({ isImportant: true }, res);
+};
+
+// Função para criar uma nova transação
+export const createTransaction = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const newTransaction = new TransactionModel(req.body);
+    await newTransaction.save();
+    res.status(201).json(newTransaction);
+  } catch (error) {
+    res.status(500).json({ message: "Erro ao criar a transação", error });
+  }
+};
+
+export const deleteTransaction = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+
+    // Verifica se o ID é válido
+    if (!id) {
+      res.status(400).json({ message: "ID da transação não fornecido" });
+      return;
+    }
+
+    // Deletar a transação com o ID fornecido
+    const deletedTransaction = await TransactionModel.findByIdAndDelete(id);
+
+    if (deletedTransaction) {
+      res.status(200).json({ message: "Transação deletada com sucesso" });
+    } else {
+      res.status(404).json({ message: "Transação não encontrada" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Erro ao deletar a transação", error });
   }
 };
