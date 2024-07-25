@@ -5,7 +5,7 @@ export interface IReminder extends Document {
   value: number;
   transactionType: "income" | "expense";
   isImportant: boolean;
-  deadlineDay: string,
+  deadlineDay: string;
   description?: string;
   bank?: string;
   forWho?: string;
@@ -23,8 +23,8 @@ const ReminderSchema: Schema = new Schema(
     isImportant: { type: Boolean, required: true },
     deadlineDay: { type: String, required: false },
     description: { type: String },
-    bank: { type: String },
-    forWho: {type: String, required: false}
+    bank: { type: String, required: false },
+    forWho: { type: String, required: false },
   },
   { timestamps: true }
 );

@@ -13,7 +13,7 @@ app.use(express.json());
 connectDB();
 
 app.use("/dash", dashRoutes);
-app.use("/", remindersRoutes)
+app.use("/", remindersRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
