@@ -11,6 +11,7 @@ function App() {
         <Link to="/transactions">transactions</Link>
         <Link to="/entries">entries</Link>
         <Link to="/expenses">expenses</Link>
+        <Link to="/importants">importants</Link>
         <Link to="/transactions/:id">details</Link>
       </ul>
       <Button variant="contained" onClick={()=> alert("Você apertou meu botão")}>Aperte o botao</Button>

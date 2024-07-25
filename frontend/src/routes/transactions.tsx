@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { fetchAllTransactions } from '../api/fetch';
 import { List, ListItem } from '@mui/material';
 import { useFinance } from '../context/TransactionContext';
+import { Link } from 'react-router-dom';
 
 const TransactionsPage = () => {
 
@@ -14,9 +15,9 @@ console.log(transactions)
       <List>
         {transactions?.map((transaction)=>{
           return(
-            <ListItem key={transaction?._id}>
+            <Link to={`/transactions/${transaction?._id}`} key={transaction?._id}>
               {transaction?.label}
-            </ListItem>
+            </Link>
           )
         })}
       </List>

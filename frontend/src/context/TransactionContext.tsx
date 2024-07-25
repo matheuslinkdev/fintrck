@@ -12,6 +12,9 @@ export const useFinance = () => {
 
 export const FinanceProvider = ({ children }) => {
   const [transactions, setTransactions] = useState([]);
+  const [entries, setEntries] = useState([]);
+  const [expenses, setExpenses] = useState([]);
+  const [importants, setImportants] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -19,7 +22,7 @@ export const FinanceProvider = ({ children }) => {
       try {
         const response = await fetchAllTransactions();
         setTransactions(response);
-        console.log(response)
+        console.log(response);
       } catch (error) {
         console.error("Failed to fetch transactions:", error);
       } finally {
@@ -66,6 +69,12 @@ export const FinanceProvider = ({ children }) => {
     }
   };
 
+  const getEntries = () =>
+    transactions.filter((t) => t.transactionType === "income");
+  const getExpenses = () =>
+    transactions.filter((t) => t.transactionType === "expense");
+  const getImportantTransactions = () =>
+    transactions.filter((t) => t.isImportant);
   return (
     <FinanceContext.Provider
       value={{
@@ -74,6 +83,9 @@ export const FinanceProvider = ({ children }) => {
         addTransaction,
         deleteTransaction,
         updateTransaction,
+        getEntries,
+        getExpenses,
+        getImportantTransactions,
       }}
     >
       {children}

@@ -1,9 +1,18 @@
-import React from 'react'
+import React from "react";
+import { useFinance } from "../context/TransactionContext";
 
 const ExpensesPage = () => {
-  return (
-    <div>ExpensesPage</div>
-  )
-}
+  const { getExpenses } = useFinance();
 
-export default ExpensesPage
+  const expenses = getExpenses();
+
+  console.log(expenses);
+
+  return <div>{expenses?.map((transaction)=>{
+    return(
+      <li>{transaction?.label}</li>
+    )
+  })}</div>;
+};
+
+export default ExpensesPage;

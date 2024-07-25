@@ -3,26 +3,20 @@ import { useFinance } from "../context/TransactionContext";
 
 
 const EntriesPage = () => {
-  const [incomes, setIncomes] = useState([]);
 
-  const { transactions } = useFinance();
+  const { getEntries } = useFinance();
 
-  useEffect(() => {
-    const justIncomes = transactions.filter(
-      (transaction) => transaction.transactionType === "expense"
-    );
-    setIncomes(justIncomes);
-  }, [transactions]); // Dependência de transactions para atualizar apenas quando transactions mudar
+  const entries = getEntries()
+  console.log(entries)
 
-  console.log(incomes);
 
   return (
     <div>
       <h2>Incomes</h2>
       <ul>
-        {incomes.map((income) => (
-          <li key={income._id}>
-            {income.label} - ${income.value}
+        {entries?.map((transaction) => (
+          <li key={transaction._id}>
+            {transaction.label} - ${transaction.value}
           </li>
         ))}
       </ul>

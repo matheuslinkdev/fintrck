@@ -11,3 +11,12 @@ export const fetchAllTransactions = async ()=>{
         console.error(err)
     }
 }
+
+export const fetchSingleTransaction = async (id: string)=>{
+    try{
+        const response = await axios.get(`http://localhost:3333/dash/transactions/${id}`)
+        return response.data
+    } catch(err){
+        console.error(err)
+    }
+}
