@@ -12,9 +12,6 @@ export const useFinance = () => {
 
 export const FinanceProvider = ({ children }) => {
   const [transactions, setTransactions] = useState([]);
-  const [entries, setEntries] = useState([]);
-  const [expenses, setExpenses] = useState([]);
-  const [importants, setImportants] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

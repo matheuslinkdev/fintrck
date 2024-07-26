@@ -1,19 +1,14 @@
-import { Button } from "@mui/material"
+import { Button, Typography } from "@mui/material"
 import { Link } from "react-router-dom"
+import colors from "./styles/colors"
+import Navbar from "./components/common/Navbar"
 
 function App() {
 
   return (
     <>
-      <h2>HomePage</h2>
-      <ul>
-        <Link to="/dash">dash</Link>
-        <Link to="/transactions">transactions</Link>
-        <Link to="/entries">entries</Link>
-        <Link to="/expenses">expenses</Link>
-        <Link to="/importants">importants</Link>
-        <Link to="/transactions/:id">details</Link>
-      </ul>
+    <Navbar/>
+      <Typography color={colors.common[100]}>HomePage</Typography>
       <Button variant="contained" onClick={()=> alert("Você apertou meu botão")}>Aperte o botao</Button>
     </>
   )

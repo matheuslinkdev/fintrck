@@ -12,23 +12,27 @@ import ExpenseDetails from "./routes/expenseDetails.tsx";
 import EntryDetails from "./routes/entryDetails.tsx";
 import Providers from "./providers/Providers.tsx";
 import ImportantsPage from "./routes/importants.tsx";
+import Navbar from "./components/common/Navbar.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-        <Providers>
-    <Router>
-      <Routes>
-          <Route path="/" element={<App />} />
-          <Route path="/dash" element={<DashboardPage />} />
-          <Route path="/transactions" element={<TransactionsPage />} />
-          <Route path="/entries" element={<EntriesPage />} />
-          <Route path="/expenses" element={<ExpensesPage />} />
-          <Route path="/importants" element={<ImportantsPage />} />
-          <Route path="/transactions/:id" element={<TransactionDetails />} />
-          <Route path="/expenses/:id" element={<ExpenseDetails />} />
-          <Route path="/entries/:id" element={<EntryDetails />} />
-      </Routes>
-    </Router>
-        </Providers>
+    <Providers>
+      <main>
+        <Router>
+        <Navbar/>
+          <Routes>
+            <Route path="/" element={<App />} />
+            <Route path="/dash" element={<DashboardPage />} />
+            <Route path="/transactions" element={<TransactionsPage />} />
+            <Route path="/entries" element={<EntriesPage />} />
+            <Route path="/expenses" element={<ExpensesPage />} />
+            <Route path="/importants" element={<ImportantsPage />} />
+            <Route path="/transactions/:id" element={<TransactionDetails />} />
+            <Route path="/expenses/:id" element={<ExpenseDetails />} />
+            <Route path="/entries/:id" element={<EntryDetails />} />
+          </Routes>
+        </Router>
+      </main>
+    </Providers>
   </React.StrictMode>
 );
