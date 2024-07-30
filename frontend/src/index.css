@@ -2,6 +2,8 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  
+  transition: var(--default-transition);
 }
 
 main{
@@ -42,8 +44,15 @@ main{
   --default-transition: .3s ease;
 }
 
+.center-screen{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
 a{
-  background-color: var(--color-300);
   color: var(--color-950);
   text-decoration: none;
   font-size: 1.1rem;
@@ -53,7 +62,6 @@ a{
   width: 160px;
   border-radius: 4px;
 
-  transition: var(--default-transition);
   &:hover{
     background-color: var(--color-400);
   }

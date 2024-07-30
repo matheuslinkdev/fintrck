@@ -1,13 +1,18 @@
-import { createTheme } from "@mui/material/styles";
+
+import { createTheme } from "@mui/material";
 
 const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#1976d2",
-      
-    },
-    secondary: {
-      main: "#dc004e",
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        "*": {
+          boxSizing: "border-box",
+        },
+        "#root": {
+          width: "100vw",
+          maxWidth: "100vw",
+        },
+      },
     },
   },
 });
