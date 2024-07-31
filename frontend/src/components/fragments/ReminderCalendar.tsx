@@ -9,7 +9,7 @@ type Reminder = {
   text: string;
 };
 
-const ReminderCalendar = () => {
+const ReminderCalendar = ({formDisplay}) => {
   const [value, setValue] = useState<Date>(new Date());
   const [reminders, setReminders] = useState<Reminder[]>([]);
   const [reminderText, setReminderText] = useState("");
@@ -56,9 +56,9 @@ const ReminderCalendar = () => {
         tileClassName={tileClassName}
         onClickDay={handleDateClick}
       />
-      <div style={{display: "none"}}>
+      <div style={{display: formDisplay}}>
         <TextField
-          label="Adicionar lembrete"
+          label="+"
           variant="outlined"
           value={reminderText}
           onChange={(e) => setReminderText(e.target.value)}

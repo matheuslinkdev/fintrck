@@ -6,7 +6,6 @@ const ImportantsPage = () => {
     const { getImportantTransactions } = useFinance()
 
     const importants = getImportantTransactions()
-    console.log(importants)
 
   return (
     <div>{importants?.map((transaction)=>{

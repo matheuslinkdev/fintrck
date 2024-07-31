@@ -11,6 +11,7 @@ import {
 } from "chart.js";
 import { ReactChart } from "chartjs-react";
 import colors from "../../styles/colors";
+import { formatDate } from "../../utils/formatDate";
 
 ChartJS.register(
   LineElement,
@@ -31,12 +32,6 @@ interface LineChartProps {
   incomes: Transaction[];
   expenses: Transaction[];
 }
-
-// Função para formatar a data para o formato DD/MM/YYYY
-const formatDate = (date: string) => {
-  const [year, month, day] = date.split("-");
-  return `${day}/${month}/${year}`;
-};
 
 const LineChart: React.FC<LineChartProps> = ({ incomes, expenses }) => {
   // Obter as últimas 10 transações ou todas, caso haja menos que 10

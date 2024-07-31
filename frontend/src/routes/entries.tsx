@@ -7,7 +7,6 @@ const EntriesPage = () => {
   const { getEntries } = useFinance();
 
   const entries = getEntries()
-  console.log(entries)
 
 
   return (

@@ -12,9 +12,6 @@ const DashboardPage: React.FC = () => {
     transactions,
     getEntries,
     getExpenses,
-    balanceSum,
-    totalEntries,
-    totalExpenses,
   } = useFinance();
 
   const originalEntries = getEntries();
@@ -54,10 +51,10 @@ const DashboardPage: React.FC = () => {
         </Box>
 
         <Box
-          sx={{ height: "310px", width: "95%" }}
+          sx={{ height: "310px", width: "95%", display: "flex", alignItems: "center", justifyContent: "center", p: 2 }}
           bgcolor={colors.common[900]}
         >
-          <ReminderCalendar />
+          <ReminderCalendar formDisplay="none"/>
         </Box>
       </Box>
 

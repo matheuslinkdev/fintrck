@@ -8,8 +8,6 @@ const TransactionsPage = () => {
 
 const { transactions } = useFinance()
 
-console.log(transactions)
-
   return (
     <div>TransactionsPage
       <List>

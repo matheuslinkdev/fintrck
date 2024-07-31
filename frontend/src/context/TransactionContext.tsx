@@ -20,7 +20,6 @@ export const FinanceProvider = ({ children }) => {
       try {
         const response = await fetchAllTransactions();
         setTransactions(response);
-        console.log(response);
       } catch (error) {
         console.error("Failed to fetch transactions:", error);
       } finally {

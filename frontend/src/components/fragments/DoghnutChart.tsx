@@ -30,8 +30,6 @@ const DoughnutChart: React.FC<DoughnutChartProps> = ({ incomes, expenses }) => {
   const totalIncomes = incomes.reduce((acc, cur) => acc + cur, 0);
   const totalExpenses = expenses.reduce((acc, cur) => acc - cur, 0);
 
-  console.log(totalExpenses);
-
   const data = {
     labels: ["Entradas", "Saídas"],
     datasets: [
