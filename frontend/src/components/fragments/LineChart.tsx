@@ -1,77 +1,123 @@
+import { Box } from "@mui/material";
 import {
-  LineController,
   LineElement,
-  PointElement,
+  CategoryScale,
+  LinearScale,
   Tooltip,
   Legend,
   Chart as ChartJS,
-  ChartData,
-  ChartOptions,
-  CategoryScale,
-  LinearScale,
+  LineController,
+  PointElement,
 } from "chart.js";
 import { ReactChart } from "chartjs-react";
+import colors from "../../styles/colors";
 
-// Registre os módulos necessários para o gráfico
 ChartJS.register(
-  LineController,
   LineElement,
-  PointElement,
+  CategoryScale,
+  LinearScale,
   Tooltip,
   Legend,
-  CategoryScale, 
-  LinearScale
+  LineController,
+  PointElement
 );
 
-interface LineChartProps {
-  entries: number[];
-  expenses: number[];
+interface Transaction {
+  value: number;
+  date: string; // Data no formato YYYY-MM-DD
 }
 
-const LineChart: React.FC<LineChartProps> = ({ entries, expenses }) => {
-  const labels = entries.map((_, index) => `Month ${index + 1}`);
+interface LineChartProps {
+  incomes: Transaction[];
+  expenses: Transaction[];
+}
 
-  const data: ChartData<"line"> = {
+// Função para formatar a data para o formato DD/MM/YYYY
+const formatDate = (date: string) => {
+  const [year, month, day] = date.split("-");
+  return `${day}/${month}/${year}`;
+};
+
+const LineChart: React.FC<LineChartProps> = ({ incomes, expenses }) => {
+  // Obter as últimas 10 transações ou todas, caso haja menos que 10
+  const latestIncomes = incomes.slice(-10);
+  const latestExpenses = expenses.slice(-10);
+
+  const labels = latestIncomes
+    .concat(latestExpenses)
+    .map((transaction) => formatDate(transaction.date));
+  const incomeValues = latestIncomes.map((transaction) => transaction.value);
+  const expenseValues = latestExpenses.map(
+    (transaction) => -Math.abs(transaction.value)
+  );
+
+  const data = {
     labels: labels,
     datasets: [
       {
         label: "Incomes",
-        data: entries,
+        data: incomeValues,
         borderColor: "#00b806",
-        backgroundColor: "rgba(0, 184, 6, 0.2)",
+        backgroundColor: "#00b806",
+        borderWidth: 2,
         fill: true,
       },
       {
         label: "Expenses",
-        data: expenses,
+        data: expenseValues,
         borderColor: "#ff2a00",
-        backgroundColor: "rgba(255, 42, 0, 0.2)",
-        fill: true, // Para preencher a área abaixo da linha
+        backgroundColor: "#ff2a00",
+        borderWidth: 2,
+        fill: true,
       },
     ],
   };
 
-  const options: ChartOptions<"line"> = {
-    animation: {
-      duration: 0, // Desabilitar animação
-    },
+  const options = {
     scales: {
       x: {
-        title: {
-          display: true,
-          text: "Months",
+        stacked: false,
+        ticks: {
+          color: "#ffffff",
         },
       },
       y: {
-        title: {
-          display: true,
-          text: "Amount",
+        stacked: false,
+        beginAtZero: true,
+        ticks: {
+          color: "#ffffff",
+          callback: function (value) {
+            return `R$ ${value.toLocaleString("pt-BR")}`;
+          },
         },
       },
     },
+    plugins: {
+      legend: {
+        display: false,
+      },
+      tooltip: {
+        callbacks: {
+          label: function (context) {
+            const value = context.raw || 0;
+            return `R$ ${value.toLocaleString("pt-BR")}`;
+          },
+        },
+        backgroundColor: "#333333",
+        titleColor: "#ffffff",
+        bodyColor: "#ffffff",
+      },
+    },
+    animation: {
+      duration: 0,
+    },
   };
 
-  return <ReactChart type="line" data={data} options={options} height={400} />;
+  return (
+    <>
+      <ReactChart type="line" data={data} options={options} height={400} />
+    </>
+  );
 };
 
 export default LineChart;

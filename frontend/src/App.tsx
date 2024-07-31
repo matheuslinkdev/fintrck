@@ -7,7 +7,6 @@ function App() {
 
   return (
     <>
-    <Navbar/>
       <Typography color={colors.common[100]}>HomePage</Typography>
       <Button variant="contained" onClick={()=> alert("Você apertou meu botão")}>Aperte o botao</Button>
     </>

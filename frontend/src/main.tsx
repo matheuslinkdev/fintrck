@@ -20,8 +20,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <main>
         <Router>
         <Navbar/>
-        <div className="center-screen">
-
+   
           <Routes>
             <Route path="/" element={<App />} />
             <Route path="/dash" element={<DashboardPage />} />
@@ -33,7 +32,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <Route path="/expenses/:id" element={<ExpenseDetails />} />
             <Route path="/entries/:id" element={<EntryDetails />} />
           </Routes>
-        </div>
         </Router>
       </main>
     </Providers>

@@ -39,7 +39,8 @@ const Navbar = () => {
         component="nav"
         sx={{
           bgcolor: colors.common[300],
-         
+         position: "absolute",
+         top: 0,
           ml: isOpen ? 0 : "-200px",
           width: "200px",
           display: "flex",

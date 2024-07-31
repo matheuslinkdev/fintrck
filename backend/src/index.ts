@@ -1,16 +1,18 @@
 import express from "express";
+import cors from "cors"; 
 import dashRoutes from "./routes/dashboardRoutes";
 import remindersRoutes from "./routes/remindersRoutes";
 import dotenv from "dotenv";
 import { connectDB } from "./db/connection";
-import { apiGuide } from "./messages/apiGuide";
-import fs from "fs"
+import fs from "fs";
 import path from "path";
+
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT;
 
+app.use(cors());
 app.use(express.json());
 
 connectDB();

@@ -7,6 +7,9 @@ import {
   DoughnutController,
 } from "chart.js";
 import { ReactChart } from "chartjs-react";
+import { formatToBRL } from "../../utils/formatValue";
+import { Box } from "@mui/material";
+import colors from "../../styles/colors";
 
 // Registre os módulos necessários para o gráfico
 ChartJS.register(
@@ -25,7 +28,9 @@ interface DoughnutChartProps {
 const DoughnutChart: React.FC<DoughnutChartProps> = ({ incomes, expenses }) => {
   // Calcula os totais de incomes e expenses
   const totalIncomes = incomes.reduce((acc, cur) => acc + cur, 0);
-  const totalExpenses = expenses.reduce((acc, cur) => acc + cur, 0);
+  const totalExpenses = expenses.reduce((acc, cur) => acc - cur, 0);
+
+  console.log(totalExpenses);
 
   const data = {
     labels: ["Incomes", "Expenses"],
@@ -47,7 +52,7 @@ const DoughnutChart: React.FC<DoughnutChartProps> = ({ incomes, expenses }) => {
           label: function (context) {
             const label = context.label || "";
             const value = context.raw || 0;
-            return `${label}: R$ ${value.toLocaleString("pt-BR")}`;
+            return `${label}: ${formatToBRL(value)}`;
           },
         },
       },
@@ -58,7 +63,9 @@ const DoughnutChart: React.FC<DoughnutChartProps> = ({ incomes, expenses }) => {
   };
 
   return (
-    <ReactChart type="doughnut" data={data} options={options} />
+    <>
+      <ReactChart type="doughnut" data={data} options={options} />
+    </>
   );
 };
 

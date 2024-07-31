@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import {
   BarElement,
   CategoryScale,
@@ -8,6 +9,7 @@ import {
   BarController,
 } from "chart.js";
 import { ReactChart } from "chartjs-react";
+import colors from "../../styles/colors";
 
 // Registre os módulos necessários para o gráfico de barras
 ChartJS.register(
@@ -55,14 +57,16 @@ const BarChart: React.FC<BarChartProps> = ({ incomes, expenses }) => {
       {
         label: "Incomes",
         data: incomeValues,
-        backgroundColor: "#00b806",
-        borderColor: "#00b806",
+        backgroundColor: "#00b806", // Cor de fundo das barras de receita
+        borderColor: "#00b806", // Cor da borda das barras de receita
+        borderWidth: 1, // Largura da borda das barras
       },
       {
         label: "Expenses",
         data: expenseValues,
-        backgroundColor: "#ff2a00",
-        borderColor: "#ff2a00",
+        backgroundColor: "#ff2a00", // Cor de fundo das barras de despesa
+        borderColor: "#ff2a00", // Cor da borda das barras de despesa
+        borderWidth: 1, // Largura da borda das barras
       },
     ],
   };
@@ -71,11 +75,15 @@ const BarChart: React.FC<BarChartProps> = ({ incomes, expenses }) => {
     scales: {
       x: {
         stacked: false,
+        ticks: {
+          color: "#ffffff", // Cor do texto dos rótulos do eixo X
+        },
       },
       y: {
         stacked: false,
         beginAtZero: true, // Iniciar o eixo Y a partir de 0
         ticks: {
+          color: "#ffffff", // Cor do texto dos rótulos do eixo Y
           callback: function (value) {
             return `R$ ${value.toLocaleString("pt-BR")}`;
           },
@@ -83,6 +91,9 @@ const BarChart: React.FC<BarChartProps> = ({ incomes, expenses }) => {
       },
     },
     plugins: {
+      legend: {
+        display: false, // Desabilita a legenda
+      },
       tooltip: {
         callbacks: {
           label: function (context) {
@@ -90,14 +101,21 @@ const BarChart: React.FC<BarChartProps> = ({ incomes, expenses }) => {
             return `R$ ${value.toLocaleString("pt-BR")}`;
           },
         },
+        backgroundColor: "#333333", // Cor do fundo do tooltip
+        titleColor: "#ffffff", // Cor do título do tooltip
+        bodyColor: "#ffffff", // Cor do texto do corpo do tooltip
       },
     },
     animation: {
-      duration: 0, // Desabilitar animação
+      duration: 0,
     },
   };
 
-  return <ReactChart type="bar" data={data} options={options} height={400} />;
+  return (
+    <Box sx={{ height: "300px", width: "500px" }} bgcolor={colors.common[800]}>
+      <ReactChart type="bar" data={data} options={options} height={400} />
+    </Box>
+  );
 };
 
 export default BarChart;

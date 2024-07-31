@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { fetchAllTransactions } from "../api/fetch";
+import { formatToBRL } from "../utils/formatValue";
 
 const FinanceContext = createContext();
 
@@ -66,12 +67,34 @@ export const FinanceProvider = ({ children }) => {
     }
   };
 
+  // Função para ordenar as transações por data (de menor para maior)
+  const sortTransactionsByDate = (trans) =>
+    trans.slice().sort((a, b) => new Date(a.date) - new Date(b.date));
+
   const getEntries = () =>
-    transactions.filter((t) => t.transactionType === "income");
+    sortTransactionsByDate(
+      transactions.filter((t) => t.transactionType === "income")
+    );
+
   const getExpenses = () =>
-    transactions.filter((t) => t.transactionType === "expense");
+    sortTransactionsByDate(
+      transactions.filter((t) => t.transactionType === "expense")
+    );
+
   const getImportantTransactions = () =>
-    transactions.filter((t) => t.isImportant);
+    sortTransactionsByDate(transactions.filter((t) => t.isImportant));
+
+  const calculateSum = (items) =>
+    items.reduce((sum, item) => sum + (item.value || 0), 0);
+
+  const totalEntries = calculateSum(getEntries());
+  const totalExpenses = calculateSum(getExpenses());
+
+  const balanceSum = () => {
+    const totalBalance = totalEntries - totalExpenses;
+    return formatToBRL(totalBalance);
+  };
+
   return (
     <FinanceContext.Provider
       value={{
@@ -83,6 +106,9 @@ export const FinanceProvider = ({ children }) => {
         getEntries,
         getExpenses,
         getImportantTransactions,
+        balanceSum,
+        totalEntries,
+        totalExpenses,
       }}
     >
       {children}
