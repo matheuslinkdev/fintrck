@@ -33,14 +33,14 @@ const DoughnutChart: React.FC<DoughnutChartProps> = ({ incomes, expenses }) => {
   console.log(totalExpenses);
 
   const data = {
-    labels: ["Incomes", "Expenses"],
+    labels: ["Entradas", "Saídas"],
     datasets: [
       {
         label: "Financial Overview",
         data: [totalIncomes, totalExpenses],
-        backgroundColor: ["#00b806", "#ff2a00"],
-        hoverBackgroundColor: ["#008b05", "#cc1902"],
-        borderColor: "#eeeeee44",
+        backgroundColor: [colors.green[500], colors.red[600]],
+        hoverBackgroundColor: [colors.green[600], colors.red[700]],
+        borderColor: "transparent",
       },
     ],
   };

@@ -49,14 +49,14 @@ const ReminderCalendar = () => {
   };
 
   return (
-    <div style={{width: "350px", height: "280px"}}>
+    <>
       <Calendar
         onChange={onChange}
         value={value}
         tileClassName={tileClassName}
         onClickDay={handleDateClick}
       />
-      <div>
+      <div style={{display: "none"}}>
         <TextField
           label="Adicionar lembrete"
           variant="outlined"
@@ -98,7 +98,7 @@ const ReminderCalendar = () => {
           </ul>
         </Box>
       </Modal>
-    </div>
+    </>
   );
 };
 

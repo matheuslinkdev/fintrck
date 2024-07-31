@@ -1,16 +1,21 @@
-import { Box, Container, Typography } from "@mui/material";
-import BarChart from "../components/fragments/BarChart";
+import { Box, Container } from "@mui/material";
 import DoughnutChart from "../components/fragments/DoghnutChart";
 import { useFinance } from "../context/TransactionContext";
 import colors from "../styles/colors";
 import ReminderCalendar from "../components/fragments/ReminderCalendar";
-import { formatToBRL } from "../utils/formatValue";
 import LineChart from "../components/fragments/LineChart";
 import BalanceCard from "../components/fragments/BalanceCard";
+import TransactionCard from "../components/fragments/TransactionCard";
 
 const DashboardPage: React.FC = () => {
-  const { getEntries, getExpenses, balanceSum, totalEntries, totalExpenses } =
-    useFinance();
+  const {
+    transactions,
+    getEntries,
+    getExpenses,
+    balanceSum,
+    totalEntries,
+    totalExpenses,
+  } = useFinance();
 
   const originalEntries = getEntries();
   const originalExpenses = getExpenses();
@@ -31,19 +36,29 @@ const DashboardPage: React.FC = () => {
         p: 4,
       }}
     >
-      <Box flex={1}>
-        <Box bgcolor={colors.common[800]} width={300}>
-          <Typography variant="h3" fontSize={26}>
-            Saldo: {balanceSum()}
-          </Typography>
-          <Typography variant="h3" fontSize={18}>
-            Entradas: {formatToBRL(totalEntries)}
-          </Typography>
-          <Typography variant="h3" fontSize={18}>
-            Saídas: {formatToBRL(totalExpenses)}
-          </Typography>
+      <Box
+        flex={1}
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+        gap={2}
+      >
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          sx={{ height: "240px", width: "95%", overflowY: "auto" }}
+          bgcolor={colors.common[900]}
+        >
+          <TransactionCard transactions={transactions} />
         </Box>
-        <ReminderCalendar />
+
+        <Box
+          sx={{ height: "310px", width: "95%" }}
+          bgcolor={colors.common[900]}
+        >
+          <ReminderCalendar />
+        </Box>
       </Box>
 
       <Box
@@ -59,19 +74,17 @@ const DashboardPage: React.FC = () => {
           display="flex"
           alignItems="center"
           justifyContent="space-between"
-          sx={{ height: "240px", width: "100%" }}
+          sx={{ height: "240px", width: "95%" }}
           bgcolor={colors.common[900]}
           p={1}
         >
           <DoughnutChart incomes={entriesValues} expenses={expensesValues} />
 
-          <Box>
-            <BalanceCard/>
-          </Box>
+          <BalanceCard />
         </Box>
 
         <Box
-          sx={{ height: "310px", width: "600px" }}
+          sx={{ height: "310px", width: "95%" }}
           bgcolor={colors.common[900]}
         >
           <LineChart incomes={latestEntries} expenses={latestExpenses} />
