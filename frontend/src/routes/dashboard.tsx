@@ -6,6 +6,7 @@ import ReminderCalendar from "../components/fragments/ReminderCalendar";
 import LineChart from "../components/fragments/LineChart";
 import BalanceCard from "../components/fragments/BalanceCard";
 import TransactionCard from "../components/fragments/TransactionCard";
+import { useEffect } from "react";
 
 const DashboardPage: React.FC = () => {
   const {
@@ -13,6 +14,10 @@ const DashboardPage: React.FC = () => {
     getEntries,
     getExpenses,
   } = useFinance();
+
+  useEffect(()=>{
+    console.log("Transaction Updated", transactions)
+  }, [transactions])
 
   const originalEntries = getEntries();
   const originalExpenses = getExpenses();

@@ -1,18 +1,46 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 import axios from "axios";
 import { fetchAllTransactions } from "../api/fetch";
 import { formatToBRL } from "../utils/formatValue";
+import { TransactionProps } from "../types/globalTypes";
 
-const FinanceContext = createContext();
+interface FinanceContextProps {
+  transactions: TransactionProps[];
+  loading: boolean;
+  addTransaction: (transaction: TransactionProps) => Promise<void>;
+  deleteTransaction: (id: string) => Promise<void>;
+  updateTransaction: (
+    id: string,
+    updatedTransaction: TransactionProps
+  ) => Promise<void>;
+  getEntries: () => TransactionProps[];
+  getExpenses: () => TransactionProps[];
+  getImportantTransactions: () => TransactionProps[];
+  balanceSum: () => string;
+  totalEntries: number;
+  totalExpenses: number;
+}
 
 const API_URL = "http://localhost:3333";
 
+const FinanceContext = createContext<FinanceContextProps | null>(null);
+
 export const useFinance = () => {
-  return useContext(FinanceContext);
+  const context = useContext(FinanceContext);
+  if (!context) {
+    throw new Error("useFinance must be used within a FinanceProvider");
+  }
+  return context;
 };
 
-export const FinanceProvider = ({ children }) => {
-  const [transactions, setTransactions] = useState([]);
+export const FinanceProvider = ({ children }: { children: ReactNode }) => {
+  const [transactions, setTransactions] = useState<TransactionProps[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -30,7 +58,7 @@ export const FinanceProvider = ({ children }) => {
     fetchTransactions();
   }, []);
 
-  const addTransaction = async (transaction) => {
+  const addTransaction = async (transaction: TransactionProps) => {
     try {
       const response = await axios.post(`${API_URL}/dash`, transaction);
       setTransactions([...transactions, response.data]);
@@ -39,18 +67,21 @@ export const FinanceProvider = ({ children }) => {
     }
   };
 
-  const deleteTransaction = async (id) => {
+  const deleteTransaction = async (id: string) => {
     try {
       await axios.delete(`${API_URL}/dash/transactions/${id}`);
       setTransactions(
-        transactions.filter((transaction) => transaction._id !== id)
+        transactions.filter((transaction) => transaction.id !== id)
       );
     } catch (error) {
       console.error("Failed to delete transaction:", error);
     }
   };
 
-  const updateTransaction = async (id, updatedTransaction) => {
+  const updateTransaction = async (
+    id: string,
+    updatedTransaction: TransactionProps
+  ) => {
     try {
       const response = await axios.put(
         `${API_URL}/dash/transactions/${id}`,
@@ -58,7 +89,7 @@ export const FinanceProvider = ({ children }) => {
       );
       setTransactions(
         transactions.map((transaction) =>
-          transaction._id === id ? response.data : transaction
+          transaction.id === id ? response.data : transaction
         )
       );
     } catch (error) {
@@ -66,9 +97,10 @@ export const FinanceProvider = ({ children }) => {
     }
   };
 
-  // Função para ordenar as transações por data (de menor para maior)
-  const sortTransactionsByDate = (trans) =>
-    trans.slice().sort((a, b) => new Date(a.date) - new Date(b.date));
+  const sortTransactionsByDate = (trans: TransactionProps[]) =>
+    trans
+      .slice()
+      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
   const getEntries = () =>
     sortTransactionsByDate(
@@ -83,7 +115,7 @@ export const FinanceProvider = ({ children }) => {
   const getImportantTransactions = () =>
     sortTransactionsByDate(transactions.filter((t) => t.isImportant));
 
-  const calculateSum = (items) =>
+  const calculateSum = (items: TransactionProps[]) =>
     items.reduce((sum, item) => sum + (item.value || 0), 0);
 
   const totalEntries = calculateSum(getEntries());

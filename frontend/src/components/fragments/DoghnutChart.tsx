@@ -8,7 +8,6 @@ import {
 } from "chart.js";
 import { ReactChart } from "chartjs-react";
 import { formatToBRL } from "../../utils/formatValue";
-import { Box } from "@mui/material";
 import colors from "../../styles/colors";
 
 // Registre os módulos necessários para o gráfico
@@ -27,8 +26,8 @@ interface DoughnutChartProps {
 
 const DoughnutChart: React.FC<DoughnutChartProps> = ({ incomes, expenses }) => {
   // Calcula os totais de incomes e expenses
-  const totalIncomes = incomes.reduce((acc, cur) => acc + cur, 0);
-  const totalExpenses = expenses.reduce((acc, cur) => acc - cur, 0);
+  const totalIncomes = incomes?.reduce((acc, cur) => acc + cur, 0);
+  const totalExpenses = expenses?.reduce((acc, cur) => acc - cur, 0);
 
   const data = {
     labels: ["Entradas", "Saídas"],

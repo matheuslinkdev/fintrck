@@ -1,5 +1,6 @@
 import React from 'react'
 import { useFinance } from '../context/TransactionContext'
+import TransactionCard from '../components/fragments/TransactionCard'
 
 const ImportantsPage = () => {
 
@@ -8,13 +9,7 @@ const ImportantsPage = () => {
     const importants = getImportantTransactions()
 
   return (
-    <div>{importants?.map((transaction)=>{
-        return(
-            <li>
-                {transaction.label}
-            </li>
-        )
-    })}</div>
+    <div><TransactionCard transactions={importants}/></div>
   )
 }
 

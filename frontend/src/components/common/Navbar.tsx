@@ -1,5 +1,5 @@
-import { Box, List, ListItem, Button } from "@mui/material";
-import React, { useState } from "react";
+import { Box, List } from "@mui/material";
+import { useState } from "react";
 import colors from "../../styles/colors";
 import { Link } from "react-router-dom";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";

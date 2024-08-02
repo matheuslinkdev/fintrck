@@ -1,19 +1,29 @@
-import { Box, List, ListItem, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import colors from "../../styles/colors";
 import { formatToBRL } from "../../utils/formatValue";
 import { formatDate } from "../../utils/formatDate";
 import { useNavigate } from "react-router-dom";
+import { TransactionProps } from "../../types/globalTypes";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useFinance } from "../../context/TransactionContext";
+import { useEffect } from "react";
 
-const TransactionCard = ({ transactions }) => {
+const TransactionCard = ({ transactions }: TransactionProps[]) => {
   const navigate = useNavigate();
+  const { deleteTransaction } = useFinance();
+
+    useEffect(() => {
+      console.log("Transaction Updated", transactions);
+    }, [transactions]);
 
   return (
     <Box display="flex" flexDirection="column" gap={1}>
-      {transactions.map((transaction) => {
+      {transactions.map((transaction: TransactionProps) => {
         return (
-          <div
+          <Box
             onClick={() => navigate(`/transactions/${transaction._id}`)}
-            style={{ cursor: "pointer" }}
+            sx={{ cursor: "pointer", position: "relative" }}
+            key={transaction._id}
           >
             <Box
               sx={{
@@ -62,8 +72,24 @@ const TransactionCard = ({ transactions }) => {
                   {formatDate(transaction.date)}
                 </Typography>
               </Box>
+              <Box
+                bgcolor="red"
+                position="absolute"
+                top={2}
+                right={6}
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <DeleteIcon
+                  onClick={(e) => {
+                    e.stopPropagation(); // Evita a propagação do clique para o card
+                    deleteTransaction(transaction._id);
+                  }}
+                />
+              </Box>
             </Box>
-          </div>
+          </Box>
         );
       })}
     </Box>

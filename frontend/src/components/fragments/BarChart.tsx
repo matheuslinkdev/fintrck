@@ -79,7 +79,7 @@ const BarChart: React.FC<BarChartProps> = ({ incomes, expenses }) => {
         beginAtZero: true, // Iniciar o eixo Y a partir de 0
         ticks: {
           color: "#ffffff", // Cor do texto dos rótulos do eixo Y
-          callback: function (value) {
+          callback: function (value: number) {
             return `R$ ${value.toLocaleString("pt-BR")}`;
           },
         },

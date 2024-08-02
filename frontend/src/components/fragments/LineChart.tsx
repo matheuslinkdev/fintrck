@@ -1,4 +1,3 @@
-import { Box } from "@mui/material";
 import {
   LineElement,
   CategoryScale,
@@ -81,7 +80,7 @@ const LineChart: React.FC<LineChartProps> = ({ incomes, expenses }) => {
         beginAtZero: true,
         ticks: {
           color: "#ffffff",
-          callback: function (value) {
+          callback: function (value: number) {
             return `R$ ${value.toLocaleString("pt-BR")}`;
           },
         },
