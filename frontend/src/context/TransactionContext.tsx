@@ -12,7 +12,6 @@ import { TransactionProps } from "../types/globalTypes";
 
 interface FinanceContextProps {
   transactions: TransactionProps[];
-  loading: boolean;
   addTransaction: (transaction: TransactionProps) => Promise<void>;
   deleteTransaction: (id: string) => Promise<void>;
   updateTransaction: (
@@ -41,7 +40,6 @@ export const useFinance = () => {
 
 export const FinanceProvider = ({ children }: { children: ReactNode }) => {
   const [transactions, setTransactions] = useState<TransactionProps[]>([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -50,13 +48,24 @@ export const FinanceProvider = ({ children }: { children: ReactNode }) => {
         setTransactions(response);
       } catch (error) {
         console.error("Failed to fetch transactions:", error);
-      } finally {
-        setLoading(false);
       }
     };
 
     fetchTransactions();
   }, []);
+
+  setTimeout(() => {
+     const fetchTransactions = async () => {
+       try {
+         const response = await fetchAllTransactions();
+         setTransactions(response);
+       } catch (error) {
+         console.error("Failed to fetch transactions:", error);
+       }
+     };
+
+     fetchTransactions()
+  }, 10000);
 
   const addTransaction = async (transaction: TransactionProps) => {
     try {
@@ -67,9 +76,9 @@ export const FinanceProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const deleteTransaction = async (id: string) => {
+  const deleteTransaction =  (id: string) => {
     try {
-      await axios.delete(`${API_URL}/dash/transactions/${id}`);
+      axios.delete(`${API_URL}/dash/transactions/${id}`);
       setTransactions(
         transactions.filter((transaction) => transaction.id !== id)
       );
@@ -130,7 +139,6 @@ export const FinanceProvider = ({ children }: { children: ReactNode }) => {
     <FinanceContext.Provider
       value={{
         transactions,
-        loading,
         addTransaction,
         deleteTransaction,
         updateTransaction,
