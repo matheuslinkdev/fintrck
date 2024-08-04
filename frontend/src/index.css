@@ -4,6 +4,7 @@
   box-sizing: border-box;
   
   transition: var(--default-transition);
+  color: var(--color-100);
 }
 
 :root {

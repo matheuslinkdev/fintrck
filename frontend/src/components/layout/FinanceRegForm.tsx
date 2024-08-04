@@ -38,10 +38,21 @@ const FinanceRegForm = () => {
 
     try {
       const res = await axios.post("http://localhost:3333/dash", formData);
-      console.log(res)
+      console.log(res);
     } catch (err) {
       console.error(err);
     }
+
+    setFormData({
+      label: "",
+      value: "",
+      transactionType: "income",
+      isImportant: false,
+      date: "",
+      description: "",
+      bank: "",
+      recurring: false,
+    });
   };
 
   return (
@@ -52,75 +63,162 @@ const FinanceRegForm = () => {
         display: "flex",
         flexDirection: "column",
         gap: 2,
-        maxWidth: 400,
+        width: 600,
+        maxWidth: "95dvw",
         margin: "auto",
-        bgcolor: colors.blue[500],
+        bgcolor: colors.common[900],
         padding: 2,
         borderRadius: 1,
         boxShadow: 1,
+        border: `2px solid ${colors.blue[600]}`,
       }}
     >
       <TextField
-        label="Label"
-        variant="outlined"
+        label="Título"
+        variant="filled"
+        InputProps={{
+          sx: {
+            bgcolor: colors.common[700],
+            color: colors.common[100],
+          },
+          style: { color: colors.common[100] },
+        }}
+        InputLabelProps={{
+          style: {
+            color: colors.common[100],
+            fontSize: 16,
+            fontWeight: 600,
+            opacity: "50%",
+          },
+        }}
         name="label"
         value={formData.label}
         onChange={handleChange}
         fullWidth
         required
       />
-      <TextField
-        label="Quantia"
-        variant="outlined"
-        name="value"
-        type="number"
-        value={formData.value}
-        onChange={handleChange}
-        fullWidth
-        required
-      />
-      <FormControl component="fieldset">
-        <FormLabel component="legend">Tipo de Transação</FormLabel>
-        <RadioGroup
-          name="transactionType"
-          value={formData.transactionType}
+
+      <Box
+        display="flex"
+        justifyContent="start"
+        alignItems="center"
+        flexWrap="wrap"
+        gap={4}
+      >
+        <TextField
+          label="Quantia"
+          variant="filled"
+          InputProps={{
+            sx: {
+              bgcolor: colors.common[700],
+              color: colors.common[100],
+            },
+            style: { color: colors.common[100] },
+          }}
+          InputLabelProps={{
+            style: {
+              color: colors.common[100],
+              fontSize: 16,
+              fontWeight: 600,
+              opacity: "50%",
+            },
+          }}
+          name="value"
+          type="number"
+          value={formData.value}
           onChange={handleChange}
-          row
-        >
-          <FormControlLabel
-            value="income"
-            control={<Radio />}
-            label="Entrada"
-          />
-          <FormControlLabel value="expense" control={<Radio />} label="Saída" />
-        </RadioGroup>
-      </FormControl>
-      <FormControlLabel
-        control={
-          <Checkbox
-            name="isImportant"
-            checked={formData.isImportant}
+          required
+        />
+        <TextField
+          label="Data"
+          variant="filled"
+          InputProps={{
+            sx: {
+              bgcolor: colors.common[700],
+              color: colors.common[100],
+            },
+            style: { color: colors.common[100] },
+          }}
+          InputLabelProps={{
+            style: {
+              color: colors.common[100],
+              fontSize: 16,
+              fontWeight: 600,
+              opacity: "50%",
+            },
+            shrink: true,
+          }}
+          name="date"
+          type="date"
+          value={formData.date}
+          onChange={handleChange}
+          required
+        />
+      </Box>
+
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        flexWrap="wrap"
+        gap={4}
+      >
+        <FormControl component="fieldset">
+          <FormLabel component="legend" sx={{ color: colors.common[100] }}>
+            Tipo de Transação
+          </FormLabel>
+          <RadioGroup
+            name="transactionType"
+            value={formData.transactionType}
             onChange={handleChange}
-          />
-        }
-        label="Is Important"
-      />
+            row
+          >
+            <FormControlLabel
+              value="income"
+              control={<Radio sx={{ color: colors.common[100] }} />}
+              label="Entrada"
+              sx={{ color: colors.common[100] }}
+            />
+            <FormControlLabel
+              value="expense"
+              control={<Radio sx={{ color: colors.common[100] }} />}
+              label="Saída"
+              sx={{ color: colors.common[100] }}
+            />
+          </RadioGroup>
+        </FormControl>
+        <FormControlLabel
+          control={
+            <Checkbox
+              name="isImportant"
+              checked={formData.isImportant}
+              onChange={handleChange}
+              sx={{ color: colors.common[100] }}
+            />
+          }
+          label="Importante"
+          sx={{ color: colors.common[100] }}
+        />
+      </Box>
+
       <TextField
-        label="Date"
-        variant="outlined"
-        name="date"
-        type="date"
-        value={formData.date}
-        onChange={handleChange}
-        fullWidth
-        required
-        InputLabelProps={{
-          shrink: true,
+        label="Descrição"
+        variant="filled"
+        InputProps={{
+          sx: {
+            bgcolor: colors.common[700],
+            color: colors.common[100],
+          },
+          style: { color: colors.common[100] },
         }}
-      />
-      <TextField
-        label="Description"
-        variant="outlined"
+        InputLabelProps={{
+          style: {
+            color: colors.common[100],
+            fontSize: 16,
+            fontWeight: 600,
+            opacity: "50%",
+          },
+        }}
         name="description"
         value={formData.description}
         onChange={handleChange}
@@ -128,26 +226,76 @@ const FinanceRegForm = () => {
         multiline
         rows={3}
       />
-      <TextField
-        label="Bank"
-        variant="outlined"
-        name="bank"
-        value={formData.bank}
-        onChange={handleChange}
-        fullWidth
-      />
-      <FormControlLabel
-        control={
-          <Checkbox
-            name="recurring"
-            checked={formData.recurring}
-            onChange={handleChange}
-          />
-        }
-        label="Recurring"
-      />
-      <Button type="submit" variant="contained" color="primary">
-        Submit
+
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        flexWrap="wrap"
+        gap={4}
+      >
+        <TextField
+          label="Banco ou Método de pagamento"
+          variant="filled"
+          InputProps={{
+            sx: {
+              bgcolor: colors.common[700],
+              color: colors.common[100],
+            },
+            style: { color: colors.common[100] },
+          }}
+          InputLabelProps={{
+            style: {
+              color: colors.common[100],
+              fontSize: 16,
+              fontWeight: 600,
+              opacity: "50%",
+            },
+          }}
+          name="bank"
+          value={formData.bank}
+          onChange={handleChange}
+          sx={{
+            flex: 2,
+            bgcolor: colors.common[700],
+            color: colors.common[100],
+          }}
+        />
+        <FormControlLabel
+          control={
+            <Checkbox
+              name="recurring"
+              checked={formData.recurring}
+              onChange={handleChange}
+              sx={{ color: colors.common[100] }}
+            />
+          }
+          label="Recorrente"
+          sx={{ color: colors.common[100] }}
+        />
+      </Box>
+
+      <Button
+        type="submit"
+        variant="contained"
+        sx={{
+          fontWeight: 600,
+          textTransform: "none",
+          bgcolor:
+            formData.transactionType === "income"
+              ? colors.green[600]
+              : colors.red[600],
+          "&:hover": {
+            bgcolor:
+              formData.transactionType === "income"
+                ? colors.green[700]
+                : colors.red[700], 
+          },
+        }}
+      >
+        {formData.transactionType === "income"
+          ? "Registrar Entrada"
+          : "Registrar Saída"}
       </Button>
     </Box>
   );
