@@ -54,19 +54,6 @@ export const FinanceProvider = ({ children }: { children: ReactNode }) => {
     fetchTransactions();
   }, []);
 
-  setTimeout(() => {
-     const fetchTransactions = async () => {
-       try {
-         const response = await fetchAllTransactions();
-         setTransactions(response);
-       } catch (error) {
-         console.error("Failed to fetch transactions:", error);
-       }
-     };
-
-     fetchTransactions()
-  }, 10000);
-
   const addTransaction = async (transaction: TransactionProps) => {
     try {
       const response = await axios.post(`${API_URL}/dash`, transaction);

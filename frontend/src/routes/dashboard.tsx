@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { fetchAllTransactions } from "../api/fetch";
 import { TransactionProps } from "../types/globalTypes";
 
-const DashboardPage: React.FC = () => {
+const DashboardPage = () => {
   const [transactions, setTransactions] = useState<TransactionProps[]>([]);
   const [entries, setEntries] = useState<TransactionProps[]>([]);
   const [expenses, setExpenses] = useState<TransactionProps[]>([]);
