@@ -39,8 +39,8 @@ const Navbar = () => {
         component="nav"
         sx={{
           bgcolor: colors.common[300],
-         position: "absolute",
-         top: 0,
+          position: "absolute",
+          top: 0,
           ml: isOpen ? 0 : "-200px",
           width: "200px",
           display: "flex",
@@ -52,12 +52,24 @@ const Navbar = () => {
         }}
       >
         <List sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-          <Link to="/">Home</Link>
-          <Link to="/dash">Dashboard</Link>
-          <Link to="/entries">Entries</Link>
-          <Link to="/expenses">Expenses</Link>
-          <Link to="/importants">Importants</Link>
-          <Link to="/reminders">Reminders</Link>
+          <Link to="/" onClick={() => setIsOpen(false)}>
+            Dashboard
+          </Link>
+          <Link to="/entries" onClick={() => setIsOpen(false)}>
+            Entradas
+          </Link>
+          <Link to="/expenses" onClick={() => setIsOpen(false)}>
+            Saídas
+          </Link>
+          <Link to="/importants" onClick={() => setIsOpen(false)}>
+            Importantes
+          </Link>
+          <Link to="/reminders" onClick={() => setIsOpen(false)}>
+            Lembretes
+          </Link>
+          <Link to="/add" onClick={() => setIsOpen(false)}>
+            Adicionar
+          </Link>
         </List>
       </Box>
     </Box>
