@@ -6,7 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { TransactionProps } from "../../types/globalTypes";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useFinance } from "../../context/TransactionContext";
-import { useEffect } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface TransactionCardProps {
   deleteDisplay: string;
@@ -20,12 +21,17 @@ const TransactionCard = ({
   const navigate = useNavigate();
   const { deleteTransaction } = useFinance();
 
+  const handleDelete = (id: string) => {
+    toast.success("Transação removida com sucesso !");
+    deleteTransaction(id);
+  };
+
   return (
     <Box display="flex" flexDirection="column" gap={1}>
       {transactions.map((transaction) => (
         <Box
           onClick={() => navigate(`/transactions/${transaction._id}`)}
-          sx={{ cursor: "pointer", position: "relative" }}
+          sx={{ position: "relative" }}
           key={transaction._id}
         >
           <Box
@@ -47,6 +53,14 @@ const TransactionCard = ({
               borderRight: `5px solid ${
                 transaction.isImportant ? colors.blue[500] : "none"
               }`,
+              "&:hover": {
+                bgcolor: colors.common[800],
+                borderBottom: `1px solid ${
+                  transaction.transactionType === "income"
+                    ? colors.green[500]
+                    : colors.red[600]
+                }`,
+              },
             }}
           >
             <Box
@@ -61,7 +75,7 @@ const TransactionCard = ({
                   color={
                     transaction.transactionType === "income"
                       ? colors.green[500]
-                      : colors.red[500]
+                      : colors.red[400]
                   }
                 >
                   {formatToBRL(transaction.value)}
@@ -77,7 +91,7 @@ const TransactionCard = ({
               </Typography>
             </Box>
             <Box
-              bgcolor="red"
+
               position="absolute"
               top={2}
               right={6}
@@ -88,14 +102,23 @@ const TransactionCard = ({
             >
               <DeleteIcon
                 onClick={(e) => {
-                  e.stopPropagation(); // Evita a propagação do clique para o card
-                  deleteTransaction(transaction._id);
+                  e.preventDefault();
+                  e.stopPropagation();
+                  handleDelete(transaction._id);
+                }}
+                sx={{
+                  cursor: "pointer",
+                  filter: `drop-shadow(0 0 2px ${colors.red[500]})`,
+                  "&:hover": {
+                    filter: `drop-shadow(0 0 8px ${colors.red[400]})`,
+                  },
                 }}
               />
             </Box>
           </Box>
         </Box>
       ))}
+      <ToastContainer autoClose={300} />
     </Box>
   );
 };

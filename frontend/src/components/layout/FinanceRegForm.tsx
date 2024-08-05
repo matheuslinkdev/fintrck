@@ -12,6 +12,8 @@ import {
 import { useState } from "react";
 import colors from "../../styles/colors";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+  import "react-toastify/dist/ReactToastify.css";
 
 const FinanceRegForm = () => {
   const [formData, setFormData] = useState({
@@ -38,7 +40,7 @@ const FinanceRegForm = () => {
 
     try {
       const res = await axios.post("http://localhost:3333/dash", formData);
-      console.log(res);
+      toast.success("Registro feito com sucesso !");
     } catch (err) {
       console.error(err);
     }
@@ -289,7 +291,7 @@ const FinanceRegForm = () => {
             bgcolor:
               formData.transactionType === "income"
                 ? colors.green[700]
-                : colors.red[700], 
+                : colors.red[700],
           },
         }}
       >
@@ -297,6 +299,7 @@ const FinanceRegForm = () => {
           ? "Registrar Entrada"
           : "Registrar Saída"}
       </Button>
+      <ToastContainer autoClose={3000} style={{color: "#212121"}}/>
     </Box>
   );
 };
